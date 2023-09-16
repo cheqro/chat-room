@@ -1,15 +1,14 @@
-FROM ubuntu:latest AS build
+# Use a base image with Java 17 (or the version specified in your POM)
+FROM adoptopenjdk/openjdk17:alpine-jre
 
-RUN apt-get update
-RUN apt-get install openjdk-17-jdk -y
-COPY . .
+# Set the working directory inside the container
+WORKDIR /app
 
-RUN ./gradlew bootJar --no-daemon
+# Copy the Spring Boot application JAR file into the container
+COPY target/*.jar app.jar
 
-FROM openjdk:17-jdk-slim
-
+# Expose the port that your Spring Boot application listens on (if needed)
 EXPOSE 8080
 
-COPY --from=build /build/libs/demo-1.jar app.jar
-
-ENTRYPOINT ["java", "-jar", "app.jar"]
+# Define the command to run your Spring Boot application
+CMD ["java", "-jar", "app.jar"]

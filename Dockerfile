@@ -1,7 +1,6 @@
-# Stage 1: Build the application
-FROM maven:3.8.2-openjdk17 AS build
+# Stage 2: Create the final image
+FROM adoptopenjdk/openjdk17:alpine-jre
 WORKDIR /app
-COPY pom.xml .
-RUN mvn dependency:go-offline
-COPY src ./src
-RUN mvn package
+COPY --from=build /app/target/demo-0.0.1-SNAPSHOT.jar demo.jar
+EXPOSE 8080
+CMD ["java", "-jar", "demo.jar"]

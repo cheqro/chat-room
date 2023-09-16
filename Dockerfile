@@ -1,14 +1,15 @@
-# Use a base image with Java 17 (or the version specified in your POM)
-FROM openjdk:17-jre-alpine
+#
+# Build stage
+#
+FROM maven:3.8.2-jdk-17 AS build
+COPY . .
+RUN mvn clean package -DskipTests
 
-# Set the working directory inside the container
-WORKDIR /app
-
-# Copy the Spring Boot application JAR file into the container
-COPY target/*.jar app.jar
-
-# Expose the port that your Spring Boot application listens on (if needed)
+#
+# Package stage
+#
+FROM openjdk:11-jdk-slim
+COPY --from=build /target/demo-0.0.1-SNAPSHOT.jar demo.jar
+# ENV PORT=8080
 EXPOSE 8080
-
-# Define the command to run your Spring Boot application
-CMD ["java", "-jar", "app.jar"]
+ENTRYPOINT ["java","-jar","demo.jar"]

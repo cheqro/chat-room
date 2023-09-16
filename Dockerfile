@@ -1,5 +1,5 @@
 # Use a base image with Java 17 (or the version specified in your POM)
-FROM adoptopenjdk/openjdk17:alpine-jre
+FROM openjdk:17-jre-alpine
 
 # Set the working directory inside the container
 WORKDIR /app

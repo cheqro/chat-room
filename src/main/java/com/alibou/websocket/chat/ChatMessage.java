@@ -15,7 +15,7 @@ import lombok.*;
 @Entity
 public class ChatMessage {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private int id;
     private MessageType type;
     private String content;

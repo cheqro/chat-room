@@ -16,6 +16,12 @@ const colors = [
     '#ffc107', '#ff85af', '#FF9800', '#39bbb0'
 ];
 
+const user = localStorage.getItem('user');
+if (!!user) {
+    var inputElement = document.getElementById('name');
+    inputElement.value = user;
+}
+
 function connect(event) {
     username = document.querySelector('#name').value.trim();
 
@@ -78,6 +84,7 @@ function onMessageReceived(payload) {
         if (message.type === 'JOIN') {
             messageElement.classList.add('event-message');
             messageElement.textContent = message.sender + ' joined!';
+            localStorage.setItem('user', message.sender);
         } else if (message.type === 'LEAVE') {
             messageElement.classList.add('event-message');
             messageElement.textContent = message.sender + ' left!';
